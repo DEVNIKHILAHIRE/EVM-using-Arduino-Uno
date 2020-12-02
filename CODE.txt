@@ -1,0 +1,202 @@
+# EVM-using-Arduino-Uno
+#include <LiquidCrystal.h>                 //...............LIBRARY INTRODUCTION FOR L.C.D. ....................//
+int contrast = 70;                          
+LiquidCrystal lcd(12,11,5,4,3,2);          //....................L.C.D PIN DECLARATION..................//
+
+//********************************THIS PROJECT IS CREATED BY N.D.A PRODUCTION'S,COPYRIGHT ACT(2019),LICENSED SOFTWARE ARDUINO IDE LLC 1.8.9************************************//
+
+#define sw1 7                      
+#define sw2 8
+#define sw3 9                             //..............PUSH BUTTONS PIN DECLARATION............//
+#define sw4 10                      
+#define sw5 13 
+	
+int buzzer=1;                            //...................BUZZER INITIALIZATION................//
+int vote1=0;
+int vote2=0;
+int vote3=0;                              //.................VOTE INITIALIZATION.................//
+int vote4=0;
+
+void setup()  
+{
+  pinMode(buzzer,OUTPUT);
+  pinMode(sw1, INPUT);
+  pinMode(sw2,INPUT);
+  pinMode(sw3,INPUT);                      //...........PUSH BUTTON WORKING MODE...............//   
+  pinMode(sw4,INPUT);
+  pinMode(sw5,INPUT);
+  
+analogWrite(6,contrast);                 //............LCD CONTRAST PIN DECLARATION.................//
+
+lcd.begin(16, 2);
+lcd.setCursor(2,0);
+lcd.print(" ELECTRONIC ");
+lcd.setCursor(0,1);
+lcd.print(" VOTING MACHINE ");            //...........LCD DISPLAY...........//    
+delay(4000);
+lcd.clear();
+lcd.setCursor(5,0);
+lcd.print("N.D.A");
+lcd.setCursor(2,1);
+lcd.print(" PRODUCTIONS ");
+delay (4000);
+  
+  digitalWrite(sw1, HIGH);
+  digitalWrite(sw2, HIGH);
+  digitalWrite(sw3, HIGH);               //..............READY TO VOTE CONDITION................//
+  digitalWrite(sw4, HIGH);
+  digitalWrite(sw5, HIGH);
+  
+lcd.clear();
+lcd.setCursor(1,0);
+lcd.print("A"); 
+lcd.setCursor(5,0);
+lcd.print("B");
+lcd.setCursor(9,0);                    //...............CANDIDATES DISPLAY MODULE...............//
+lcd.print("C");
+lcd.setCursor(13,0);
+lcd.print("D");
+}
+
+void loop()
+{
+ analogWrite (6,contrast); 
+lcd.setCursor(1,0);
+  lcd.print("A");
+  lcd.setCursor(1,1);
+  lcd.print(vote1);
+  lcd.setCursor(5,0);
+  lcd.print("B");
+  lcd.setCursor(5,1);
+  lcd.print(vote2);
+  lcd.setCursor(9,0);
+  lcd.print("C");
+  lcd.setCursor(9,1);
+  lcd.print(vote3);
+  lcd.setCursor(13,0);
+  lcd.print("D"); 
+  lcd.setCursor(13,1);
+  lcd.print(vote4);
+                                          //................ MACHINE STARTS RECIVING VOTES............//   
+  if(digitalRead(sw1)==0)
+     {vote1++;
+    digitalWrite(buzzer,HIGH);}
+  else  
+    digitalWrite(buzzer,LOW);
+    while(digitalRead(sw1)==0);
+  if(digitalRead(sw2)==0)
+    {vote2++;
+    digitalWrite(buzzer,HIGH);}
+  else  
+    digitalWrite(buzzer,LOW);
+    while(digitalRead(sw2)==0);
+  if(digitalRead(sw3)==0)
+   { vote3++;
+    digitalWrite(buzzer,HIGH);}
+  else  
+    digitalWrite(buzzer,LOW);
+    while(digitalRead(sw3)==0);
+   if(digitalRead(sw4)==0)
+    {vote4++;
+    digitalWrite(buzzer,HIGH);}
+   else  
+    digitalWrite(buzzer,LOW);
+   while(digitalRead(sw4)==0);
+   if(digitalRead(sw5)==0)
+   {
+     int vote=vote1+vote2+vote3+vote4;                     //............VOTING RESULT LOGIC.............//
+     if(vote)
+     {
+      if((vote1 > vote2 && vote1 > vote3 && vote1 > vote4))
+      {
+       lcd.clear();
+       lcd.setCursor(4,0);
+       lcd.print(" A Wins");
+       delay(2000);
+       lcd.clear();
+
+       lcd.print("THANKS FOR VOTE");
+       delay(2000);
+       lcd.clear();
+      }
+      else if((vote2 > vote1 && vote2 > vote3 && vote2 > vote4))
+      {
+       lcd.clear();
+       lcd.setCursor(4,0);
+       lcd.print(" B Wins");
+       delay(2000);
+       lcd.clear();
+
+       lcd.print("THANKS FOR VOTE");
+       delay(2000);
+       lcd.clear();
+      }
+      else if((vote3 > vote1 && vote3 > vote2 && vote3 > vote4))
+      {
+       lcd.clear();
+       lcd.setCursor(4,0);
+       lcd.print(" C Wins");
+       delay(2000);
+       lcd.clear();
+
+       lcd.print("THANKS FOR VOTE");
+       delay(2000);
+       lcd.clear();
+      }
+     else if(vote4 > vote1 && vote4 > vote2 && vote4 > vote3)
+     {
+       lcd.setCursor(0,0);
+       lcd.clear();
+       lcd.setCursor(4,0);
+       lcd.print(" D Wins");
+       delay(2000);
+       lcd.clear();
+
+       lcd.print("THANKS FOR VOTE");
+       delay(2000);
+       lcd.clear();
+     }
+     
+      else if(vote4 > vote1 && vote4 > vote2 && vote4 > vote3)
+     {
+       lcd.setCursor(0,0);
+       lcd.clear();
+       lcd.setCursor(4,0);
+       lcd.print("D Wins");
+       delay(2000);
+       lcd.clear();
+
+       lcd.print("THANKS FOR VOTE");
+       delay(2000);
+       lcd.clear();
+     }
+     
+     else
+     {
+       lcd.clear();
+       lcd.print("    Tie Up ");
+       lcd.setCursor(0,1);
+       lcd.print("   No Result   ");
+       delay(2000);
+       lcd.clear();
+
+       lcd.print("THANKS FOR VOTE");
+       delay(1000);
+       lcd.clear();
+     }
+     
+    }      
+     else 
+     {
+       lcd.clear();
+       lcd.print(" No Voting....");
+       delay(1000);
+       lcd.clear();
+     }
+     vote1=0;vote2=0;vote3=0;vote4=0,vote=0;                                      //RESET// 
+     lcd.clear();                                                
+   }
+  }                                               // .......................THE END OF PROGRAMMING.....................//
+   //*********************************************************************NIKHIL DATTATRY AHIRE******************************************************************************//
+                                                                        //nikhilahire54@gmail.com//
+
